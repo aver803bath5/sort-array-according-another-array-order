@@ -1,4 +1,5 @@
 // Generate a hash map which structure is (key: arr1's element, value: occurence of the key number)
+// O(n + m)
 function genHashMap(arr1, arr2) {
   const hashMap = new Map(arr2.map((element) => [element, 0]));
 
@@ -13,6 +14,7 @@ function genHashMap(arr1, arr2) {
   return hashMap;
 }
 
+// O(n)
 function sortArray(arr1, arr2) {
   let result = [];
   const hashMap = genHashMap(arr1, arr2);
