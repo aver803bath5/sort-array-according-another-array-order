@@ -1,4 +1,3 @@
-'use strict'
 // Example 1:
 // Input: arr1 = [2,3,1,3,2,4,6,7,9,2,19], arr2 = [2,1,4,3,9,6]
 // Output: [2,2,2,1,4,3,3,9,6,7,19]
@@ -15,9 +14,9 @@ function first(arr, low, high, x, n) {
       return mid;
     }
     if (x > arr[mid]) {
-      return first(arr, (mid + 1), high, x, n);
+      return first(arr, mid + 1, high, x, n);
     }
-    return first(arr, low, (mid - 1), x, n);
+    return first(arr, low, mid - 1, x, n);
   }
 
   return -1;
@@ -33,7 +32,7 @@ function sortAccording(arr1, arr2, m, n) {
   const temp = [...arr1];
   const visited = Array(m).fill(0);
 
-  // Sort elements in temp 
+  // Sort elements in temp
   // * O(mlogm)
   temp.sort((a, b) => a - b);
 
@@ -50,19 +49,17 @@ function sortAccording(arr1, arr2, m, n) {
     // O(logm);
     const f = first(temp, 0, m - 1, arr2[i], m);
 
-    // If not present, no need to proceed
-    if (f === -1) {
-      continue;
-    }
-
-    // Copy all occurrences of arr2[i] to arr1[]
-    // O(m)
-    let j = f;
-    while (j < m && temp[j] === arr2[i]) {
-      arr1[ind] = temp[j];
-      ind += 1;
-      visited[j] = 1;
-      j += 1;
+    // If present, Copy all occurrences of arr2[i] to arr1[]
+    if (f >= -1) {
+      // O(m)
+      let j = f;
+      while (j < m && temp[j] === arr2[i]) {
+        // eslint-disable-next-line no-param-reassign
+        arr1[ind] = temp[j];
+        ind += 1;
+        visited[j] = 1;
+        j += 1;
+      }
     }
   }
 
@@ -71,17 +68,18 @@ function sortAccording(arr1, arr2, m, n) {
   // O(m)
   for (i = 0; i < m; i += 1) {
     if (visited[i] === 0) {
+      // eslint-disable-next-line no-param-reassign
       arr1[ind] = temp[i];
       ind += 1;
     }
   }
 }
 
-const arr1 = [2,3,1,3,2,4,6,7,9,2,19];
-const arr2 = [2,1,4,3,9,6];
+const arr1 = [2, 3, 1, 3, 2, 4, 6, 7, 9, 2, 19];
+const arr2 = [2, 1, 4, 3, 9, 6];
 
 const m = arr1.length;
 const n = arr2.length;
-console.log("Sorted array is ");
+console.log('Sorted array is ');
 sortAccording(arr1, arr2, m, n);
 console.log(arr1);
