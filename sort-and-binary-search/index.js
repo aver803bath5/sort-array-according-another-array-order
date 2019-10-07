@@ -42,7 +42,7 @@ function sortAccording(arr1, arr2, m, n) {
   // Consider all elements of arr2[], find
   // them in temp[] and copy to arr1[] in order.
   let i = 0;
-  // * O(nlogm)
+  // * O(nlogm * m)
   for (i = 0; i < n; i += 1) {
     // Find index of the first occurence
     // of arr2[i] in temp
