@@ -3,9 +3,8 @@ function searchArr2(arr2, key) {
 }
 
 function sortA1ByA2(arr1, arr2) {
-  const searchArr2BindWithArr2 = searchArr2.bind(null, arr2);
-
   function comparer(a, b) {
+    const searchArr2BindWithArr2 = searchArr2.bind(null, arr2);
     const idx1 = searchArr2BindWithArr2(a);
     const idx2 = searchArr2BindWithArr2(b);
 
