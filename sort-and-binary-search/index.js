@@ -7,29 +7,57 @@
 // Each arr2[i] is distinct.
 // Each arr2[i] is in arr1.
 
-function findFirstMatchElementIndex(searchedArray, startSearchPosition, endSearchPosition, targetElement, searchedArrayLength) {
+function findFirstMatchElementIndex(
+  searchedArray,
+  startSearchPosition,
+  endSearchPosition,
+  targetElement,
+  searchedArrayLength,
+) {
   if (endSearchPosition >= startSearchPosition) {
-    const middleIndexOfSearchedArray = Math.floor((startSearchPosition + endSearchPosition) / 2);
+    const middleIndexOfSearchedArray = Math.floor(
+      (startSearchPosition + endSearchPosition) / 2,
+    );
     if (isFound(middleIndexOfSearchedArray, targetElement, searchedArray)) {
       return middleIndexOfSearchedArray;
     }
     if (targetElement > searchedArray[middleIndexOfSearchedArray]) {
-      return findFirstMatchElementIndex(searchedArray, middleIndexOfSearchedArray + 1, endSearchPosition, targetElement, searchedArrayLength);
+      return findFirstMatchElementIndex(
+        searchedArray,
+        middleIndexOfSearchedArray + 1,
+        endSearchPosition,
+        targetElement,
+        searchedArrayLength,
+      );
     }
-    return findFirstMatchElementIndex(searchedArray, startSearchPosition, middleIndexOfSearchedArray - 1, targetElement, searchedArrayLength);
+    return findFirstMatchElementIndex(
+      searchedArray,
+      startSearchPosition,
+      middleIndexOfSearchedArray - 1,
+      targetElement,
+      searchedArrayLength,
+    );
   }
 
   function isFound(middleIndexOfSearchedArray, targetElement, searchedArray) {
-    return (middleIndexOfSearchedArray === 0 || targetElement > searchedArray[middleIndexOfSearchedArray - 1]) && searchedArray[middleIndexOfSearchedArray] === targetElement;
+    return (
+      (middleIndexOfSearchedArray === 0
+        || targetElement > searchedArray[middleIndexOfSearchedArray - 1])
+      && searchedArray[middleIndexOfSearchedArray] === targetElement
+    );
   }
 
   return -1;
 }
 
-
 // Sort arr1[0...m-1] according to the order
 // defined by arr2[0...n-1]
-function sortOneArrayAccordingToTheOtherArrayOrder(sortedArray, sortOrderArray, sortedArrayLength, sortOrderArrayLength) {
+function sortOneArrayAccordingToTheOtherArrayOrder(
+  sortedArray,
+  sortOrderArray,
+  sortedArrayLength,
+  sortOrderArrayLength,
+) {
   // The temp array is used to store a copy of
   // arr1[] and visited[] is used mark the
   // visited elements in temp[].
@@ -52,7 +80,13 @@ function sortOneArrayAccordingToTheOtherArrayOrder(sortedArray, sortOrderArray, 
     // Find index of the first occurence
     // of arr2[i] in temp
     // O(logm);
-    const firstSortedArrayElementIndexInSortOrderArray = findFirstMatchElementIndex(temp, 0, sortedArrayLength - 1, sortOrderArray[i], sortedArrayLength);
+    const firstSortedArrayElementIndexInSortOrderArray = findFirstMatchElementIndex(
+      temp,
+      0,
+      sortedArrayLength - 1,
+      sortOrderArray[i],
+      sortedArrayLength,
+    );
 
     // If present, Copy all occurrences of arr2[i] to arr1[]
     if (firstSortedArrayElementIndexInSortOrderArray >= -1) {
