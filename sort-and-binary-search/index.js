@@ -7,30 +7,35 @@
 // Each arr2[i] is distinct.
 // Each arr2[i] is in arr1.
 
-function first(arr, low, high, x, n) {
-  if (high >= low) {
-    const mid = Math.floor((low + high) / 2);
-    if ((mid === 0 || x > arr[mid - 1]) && arr[mid] === x) {
-      return mid;
+function findFirstMatchElementIndex(searchedArray, startSearchPosition, endSearchPosition, targetElement, searchedArrayLength) {
+  if (endSearchPosition >= startSearchPosition) {
+    const middleIndexOfSearchedArray = Math.floor((startSearchPosition + endSearchPosition) / 2);
+    if (isFound(middleIndexOfSearchedArray, targetElement, searchedArray)) {
+      return middleIndexOfSearchedArray;
     }
-    if (x > arr[mid]) {
-      return first(arr, mid + 1, high, x, n);
+    if (targetElement > searchedArray[middleIndexOfSearchedArray]) {
+      return findFirstMatchElementIndex(searchedArray, middleIndexOfSearchedArray + 1, endSearchPosition, targetElement, searchedArrayLength);
     }
-    return first(arr, low, mid - 1, x, n);
+    return findFirstMatchElementIndex(searchedArray, startSearchPosition, middleIndexOfSearchedArray - 1, targetElement, searchedArrayLength);
+  }
+
+  function isFound(middleIndexOfSearchedArray, targetElement, searchedArray) {
+    return (middleIndexOfSearchedArray === 0 || targetElement > searchedArray[middleIndexOfSearchedArray - 1]) && searchedArray[middleIndexOfSearchedArray] === targetElement;
   }
 
   return -1;
 }
 
+
 // Sort arr1[0...m-1] according to the order
 // defined by arr2[0...n-1]
-function sortAccording(arr1, arr2, m, n) {
+function sortOneArrayAccordingToTheOtherArrayOrder(sortedArray, sortOrderArray, sortedArrayLength, sortOrderArrayLength) {
   // The temp array is used to store a copy of
   // arr1[] and visited[] is used mark the
   // visited elements in temp[].
   // O(m)
-  const temp = [...arr1];
-  const visited = Array(m).fill(0);
+  const temp = [...sortedArray];
+  const visited = Array(sortedArrayLength).fill(0);
 
   // Sort elements in temp
   // * O(mlogm)
@@ -41,21 +46,21 @@ function sortAccording(arr1, arr2, m, n) {
 
   // Consider all elements of arr2[], find
   // them in temp[] and copy to arr1[] in order.
-  let i = 0;
+  let i;
   // * O(nlogm * m)
-  for (i = 0; i < n; i += 1) {
+  for (i = 0; i < sortOrderArrayLength; i += 1) {
     // Find index of the first occurence
     // of arr2[i] in temp
     // O(logm);
-    const f = first(temp, 0, m - 1, arr2[i], m);
+    const firstSortedArrayElementIndexInSortOrderArray = findFirstMatchElementIndex(temp, 0, sortedArrayLength - 1, sortOrderArray[i], sortedArrayLength);
 
     // If present, Copy all occurrences of arr2[i] to arr1[]
-    if (f >= -1) {
+    if (firstSortedArrayElementIndexInSortOrderArray >= -1) {
       // O(m)
-      let j = f;
-      while (j < m && temp[j] === arr2[i]) {
+      let j = firstSortedArrayElementIndexInSortOrderArray;
+      while (isMatched(j)) {
         // eslint-disable-next-line no-param-reassign
-        arr1[ind] = temp[j];
+        sortedArray[ind] = temp[j];
         ind += 1;
         visited[j] = 1;
         j += 1;
@@ -66,12 +71,20 @@ function sortAccording(arr1, arr2, m, n) {
   // Now copy all items of temp[] which are
   // not present in arr2[]
   // O(m)
-  for (i = 0; i < m; i += 1) {
-    if (visited[i] === 0) {
-      // eslint-disable-next-line no-param-reassign
-      arr1[ind] = temp[i];
-      ind += 1;
+  insertElementsNotAppearInSortOrderArray();
+
+  function insertElementsNotAppearInSortOrderArray() {
+    for (i = 0; i < sortedArrayLength; i += 1) {
+      if (visited[i] === 0) {
+        // eslint-disable-next-line no-param-reassign
+        sortedArray[ind] = temp[i];
+        ind += 1;
+      }
     }
+  }
+
+  function isMatched(j) {
+    return j < sortedArrayLength && temp[j] === sortOrderArray[i];
   }
 }
 
@@ -81,5 +94,5 @@ const arr2 = [2, 1, 4, 3, 9, 6];
 const m = arr1.length;
 const n = arr2.length;
 console.log('Sorted array is ');
-sortAccording(arr1, arr2, m, n);
+sortOneArrayAccordingToTheOtherArrayOrder(arr1, arr2, m, n);
 console.log(arr1);
